@@ -160,6 +160,7 @@ const addBook = () => {
 
   document.dispatchEvent(new Event(RENDER_EVENT));
   saveData();
+  getTotalBuku();
 };
 
 

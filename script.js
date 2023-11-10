@@ -1,5 +1,9 @@
 const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
 
+let totalBuku = document.getElementById("totalBuku");
+let totalBelumDibaca = document.getElementById("totalBelumDibaca");
+let totalSudahDibaca = document.getElementById("totalSudahDibaca");
+
 allSideMenu.forEach(item=> {
 	const li = item.parentElement;
 
@@ -38,19 +42,16 @@ document.addEventListener(RENDER_EVENT, () => {
   const finishedBook = document.getElementById("sudahDibaca");
   finishedBook.innerHTML = "";
 
-    let localStorageBuku =localStorage.getItem(STORAGE_KEY);
-	let objectStorageBuku = JSON.parse(localStorageBuku);
-	myBook=[...objectStorageBuku];
-	console.log(books)
-	let completedItems = objectStorageBuku.filter(item => item.isComplete === true);
-	let countCompleteItems = completedItems.length;
-	let unCompletedItems = objectStorageBuku.filter(item => item.isComplete === false);
-	let countUnCompleteItems = unCompletedItems.length;
-	
-	
-	totalBuku.innerText=myBook.length;
-	totalBelumDibaca.innerText=countUnCompleteItems;
-	totalSudahDibaca.innerText=countCompleteItems;
+  let completedItems = books.filter(item => item.isComplete === true);
+  let countCompleteItems = completedItems.length;
+  let unCompletedItems = books.filter(item => item.isComplete === false);
+  let countUnCompleteItems = unCompletedItems.length;
+  
+  
+  totalBuku.innerText=books.length;
+  totalBelumDibaca.innerText=countUnCompleteItems;
+  totalSudahDibaca.innerText=countCompleteItems;
+
 
   for (const bookItem of books) {
     const bookElement = makeBookElement(bookItem);
@@ -99,7 +100,11 @@ document.addEventListener(DELETED_EVENT, () => {
 const loadDataFromStorage = () => {
   const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
+
+
   if (data !== null) {
+
+
     for (const item of data) {
       books.push(item);
     }
@@ -160,31 +165,7 @@ const addBook = () => {
 
   document.dispatchEvent(new Event(RENDER_EVENT));
   saveData();
-  getTotalBuku();
 };
-
-
-function getTotalBuku(){
-	
-    let totalBuku = document.getElementById("totalBuku");
-	let totalBelumDibaca = document.getElementById("totalBelumDibaca");
-	let totalSudahDibaca = document.getElementById("totalSudahDibaca");
-	
-	let localStorageBuku =localStorage.getItem(STORAGE_KEY);
-	let objectStorageBuku = JSON.parse(localStorageBuku);
-	myBook=[...objectStorageBuku];
-	console.log(books)
-	let completedItems = objectStorageBuku.filter(item => item.isComplete === true);
-	let countCompleteItems = completedItems.length;
-	let unCompletedItems = objectStorageBuku.filter(item => item.isComplete === false);
-	let countUnCompleteItems = completedItems.length;
-	
-	
-	totalBuku.innerText=myBook.length;
-	totalBelumDibaca.innerText=completedItems.length;
-	totalSudahDibaca.innerText=countCompleteItems;
-	
-}
 
 
 
@@ -313,10 +294,6 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     addBook();
 
-	let localStorageBuku =localStorage.getItem(STORAGE_KEY);
-	let objectStorageBuku = JSON.parse(localStorageBuku);
-	myBook=[...objectStorageBuku];
-	totalBuku.innerText=myBook.length;
 
   });
 
